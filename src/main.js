@@ -10,13 +10,9 @@ const store = createStore(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
-function handleReady() {
-  ReactDOM.render(
-    <Provider store={store}>
-      <Page />
-    </Provider>,
-    document.getElementById('root')
-  );
-}
-
-window.addEventListener('load', handleReady);
+ReactDOM.render(
+  <Provider store={store}>
+    <Page />
+  </Provider>,
+  document.getElementById('root')
+);
