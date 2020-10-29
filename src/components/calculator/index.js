@@ -1,37 +1,78 @@
-import React from 'react'
-import * as keys from './keys'
-import Display from './display'
-import Panel from './Panel'
-import { useDispatch, useSelector } from 'react-redux'
-import { operators, actionTypes } from '../../constants'
+import React, { useState, useEffect, useRef } from 'react'
+import styled from 'styled-components'
+import Panel from './panel'
+import Draggable from '../draggable'
+import { style as styleConstants } from '../../constants'
 
-export default function Calculator(props) {
-  const { displayed: displayedValue } = useSelector(state => state.calculator)
-  const dispatch = useDispatch()
+const MobilePositioner = styled.div`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: ${(474 / 274) * 360}px;
+  max-height: 50%;
+  overflow-y: auto;
+  box-sizing: border-box;
+`
+
+function getViewportWidth() {
+  let width = 0
+  if (
+    typeof document !== 'undefined' &&
+    document.documentElement &&
+    document.documentElement.clientWidth
+  ) {
+    width = document.documentElement.clientWidth
+  } else if (typeof window !== 'undefined' && window.innerWidth) {
+    width = window.innerWidth
+  }
+  return width
+}
+
+export default function Calculator() {
+  const [isVisible, setIsVisible] = useState(false)
+  const [isMobile, setMobile] = useState(false)
+  const calculatorNode = useRef(null)
+
+  // Close the calculator when clicked outside
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (!calculatorNode.current || !calculatorNode.current.contains(e.target)) {
+        setIsVisible(false)
+      }
+    }
+    if (isVisible) {
+      document.addEventListener('click', handleClick)
+      return () => {
+        document.removeEventListener('click', handleClick)
+      }
+    }
+  }, [isVisible])
+
+  // Handle RWD
+  useEffect(() => {
+    setMobile(getViewportWidth() <= styleConstants.breakpoints.mobileMaxWidth)
+    const handleResize = () => {
+      setMobile(getViewportWidth() <= styleConstants.breakpoints.mobileMaxWidth)
+    }
+    window.addEventListener('resize', handleResize)
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
+
   return (
-    <Panel>
-      <Display>{displayedValue}</Display>
-      <keys.Container>
-        <keys.FunctionKey onClick={() => {dispatch({ type: actionTypes.clear }) }}><span>AC</span></keys.FunctionKey>
-        <keys.FunctionKey onClick={() => {dispatch({ type: actionTypes.negation }) }}><span>+/-</span></keys.FunctionKey>
-        <keys.FunctionKey onClick={() => {dispatch({ type: actionTypes.operation, payload: { operator: operators.mod } }) }}><span>﹪</span></keys.FunctionKey>
-        <keys.BasicOperationKey onClick={() => {dispatch({ type: actionTypes.operation, payload: { operator: operators.divide } }) }}><span>÷</span></keys.BasicOperationKey>
-        <keys.NumberKey onClick={() => {dispatch({ type: actionTypes.number, payload: { inputNumber: '7' } }) }}><span>7</span></keys.NumberKey>
-        <keys.NumberKey onClick={() => {dispatch({ type: actionTypes.number, payload: { inputNumber: '8' } }) }}><span>8</span></keys.NumberKey>
-        <keys.NumberKey onClick={() => {dispatch({ type: actionTypes.number, payload: { inputNumber: '9' } }) }}><span>9</span></keys.NumberKey>
-        <keys.BasicOperationKey onClick={() => {dispatch({ type: actionTypes.operation, payload: { operator: operators.multiply } }) }}><span>×</span></keys.BasicOperationKey>
-        <keys.NumberKey onClick={() => {dispatch({ type: actionTypes.number, payload: { inputNumber: '4' } }) }}><span>4</span></keys.NumberKey>
-        <keys.NumberKey onClick={() => {dispatch({ type: actionTypes.number, payload: { inputNumber: '5' } }) }}><span>5</span></keys.NumberKey>
-        <keys.NumberKey onClick={() => {dispatch({ type: actionTypes.number, payload: { inputNumber: '6' } }) }}><span>6</span></keys.NumberKey>
-        <keys.BasicOperationKey onClick={() => {dispatch({ type: actionTypes.operation, payload: { operator: operators.subtract } }) }}><span>﹣</span></keys.BasicOperationKey>
-        <keys.NumberKey onClick={() => {dispatch({ type: actionTypes.number, payload: { inputNumber: '1' } }) }}><span>1</span></keys.NumberKey>
-        <keys.NumberKey onClick={() => {dispatch({ type: actionTypes.number, payload: { inputNumber: '2' } }) }}><span>2</span></keys.NumberKey>
-        <keys.NumberKey onClick={() => {dispatch({ type: actionTypes.number, payload: { inputNumber: '3' } }) }}><span>3</span></keys.NumberKey>
-        <keys.BasicOperationKey onClick={() => {dispatch({ type: actionTypes.operation, payload: { operator: operators.add } }) }}><span>﹢</span></keys.BasicOperationKey>
-        <keys.ZeroKey onClick={() => {dispatch({ type: actionTypes.number, payload: { inputNumber: '0' } }) }}><span>0</span></keys.ZeroKey>
-        <keys.NumberKey onClick={() => {dispatch({ type: 'decimal', payload: { inputNumber: '.' } }) }}><span>.</span></keys.NumberKey>
-        <keys.BasicOperationKey onClick={() => {dispatch({ type: actionTypes.equal }) }}><span>﹦</span></keys.BasicOperationKey>
-      </keys.Container>
-    </Panel>
+    <>
+      <button onClick={() => { setIsVisible(!isVisible) }}>小算盤</button>
+      {!isVisible ? null : isMobile ? (
+        <MobilePositioner ref={calculatorNode}>
+          <Panel />
+        </MobilePositioner>
+      ) : (
+        <Draggable ref={calculatorNode}>
+          <Panel />
+        </Draggable>
+      )}
+    </>
   )
 }

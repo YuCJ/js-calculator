@@ -1,5 +1,7 @@
 import styled from 'styled-components'
-// import React from 'react'
+import React from 'react'
+import { useDispatch } from 'react-redux'
+import { operators, actionTypes } from '../../constants'
 
 const BaseKey = styled.div`
   cursor: pointer;
@@ -21,35 +23,44 @@ const BaseKey = styled.div`
     font-size: 1em; /* base on Panel font-size */
   }
 `
+export const styledKeys = {
+  NumberKey: styled(BaseKey)`
+    color: #ffffff;
+    background-color: #333333;
+  `,
+  BasicOperationKey: styled(BaseKey)`
+    color: #ffffff;
+    background-color: #3091FD;
+  `,
+  FunctionKey: styled(BaseKey)`
+    color: #000000;
+    background-color: #AFAFAF;
+  `,
+  ZeroKey: styled(BaseKey)`
+    color: #ffffff;
+    background-color: #333333;
+    width: 44%;
+    border-radius: 0;
+    border-top-right-radius: 22.5% 50%;
+    border-top-left-radius: 22.5% 50%;
+    border-bottom-right-radius: 22.5% 50%;
+    border-bottom-left-radius: 22.5% 50%;
+    ::after {
+      padding-bottom: 45%; /*  = 20% / 44% */
+      display: block;
+      content: "";
+    }
+  `
+}
 
-export const NumberKey = styled(BaseKey)`
-  color: #ffffff;
-  background-color: #333333;
-`
-
-export const BasicOperationKey = styled(BaseKey)`
-  color: #ffffff;
-  background-color: #3091FD;
-`
-
-export const FunctionKey = styled(BaseKey)`
-  color: #000000;
-  background-color: #AFAFAF;
-`
-
-export const ZeroKey = styled(NumberKey)`
-  width: 44%;
-  border-radius: 0;
-  border-top-right-radius: 22.5% 50%;
-  border-top-left-radius: 22.5% 50%;
-  border-bottom-right-radius: 22.5% 50%;
-  border-bottom-left-radius: 22.5% 50%;
-  ::after {
-    padding-bottom: 45%; /*  = 20% / 44% */
-    display: block;
-    content: "";
-  }
-`
+export function Key({ type, payload, Component, label }) {
+  const dispatch = useDispatch()
+  return (
+    <Component onClick={() => {dispatch({ type, payload }) }}>
+      <span>{label}</span>
+    </Component>
+  )
+}
 
 export const Container = styled.div`
   display: flex;

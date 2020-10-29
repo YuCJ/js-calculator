@@ -14,3 +14,19 @@ export const actionTypes = {
   operation: 'operation',
   negation: 'negation'
 } 
+
+export const style = {
+  breakpoints: {
+    mobileMaxWidth: 480,
+    desktopSmallMaxWidth: 767,
+  },
+  desktopWidth: 480,
+  desktopSmallWidth: 360, 
+}
+
+export const mockup = {
+  keySize: 55,
+  width: 274,
+  height: 474,
+  keyFontSize: 20,
+}

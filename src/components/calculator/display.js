@@ -5,7 +5,7 @@ const Display = styled.div`
   text-align: right;
   font-size: 2.5em; /* base on Panel font-size */
   color: #ffffff;
-  padding: 0 20px;
+  padding: .2em .2em;
   overflow-x: auto;
   width: 100%;
 `
