@@ -56,6 +56,17 @@ export const styledKeys = {
   `,
 };
 
+/**
+ *
+ *
+ * @export
+ * @param {Object} props
+ * @param {string} props.type - Action type
+ * @param {*} props.payload - Action payload
+ * @param {React.Component} props.Component - Rendered wrapping component
+ * @param {string} props.label - Displayed label
+ * @returns
+ */
 export function Key({ type, payload, Component, label }) {
   const dispatch = useDispatch();
   return (
