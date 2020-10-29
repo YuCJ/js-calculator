@@ -1,8 +1,10 @@
 # js-calculator
 
-Use `npm` or `yarn` to install dependencies before starting dev server
+[DEMO](https://yucj.github.io/js-calculator/)
 
 ## Start Dev Server
+
+Use `npm` or `yarn` to install dependencies before starting dev server
 
 ```
 npm run dev
