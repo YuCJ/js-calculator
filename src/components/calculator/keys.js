@@ -50,6 +50,9 @@ export const styledKeys = {
       display: block;
       content: '';
     }
+    >span {
+      left: 22.5%;
+    }
   `,
 };
 
