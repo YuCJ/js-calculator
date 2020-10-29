@@ -1,7 +1,7 @@
-import styled from 'styled-components'
-import React from 'react'
-import { useDispatch } from 'react-redux'
-import { operators, actionTypes } from '../../constants'
+import styled from 'styled-components';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { operators, actionTypes } from '../../constants';
 
 const BaseKey = styled.div`
   cursor: pointer;
@@ -11,18 +11,18 @@ const BaseKey = styled.div`
   ::after {
     padding-bottom: 100%;
     display: block;
-    content: "";
+    content: '';
   }
   border-radius: 50%;
   margin: 2%;
-  >span {
+  > span {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 1em; /* base on Panel font-size */
   }
-`
+`;
 export const styledKeys = {
   NumberKey: styled(BaseKey)`
     color: #ffffff;
@@ -30,11 +30,11 @@ export const styledKeys = {
   `,
   BasicOperationKey: styled(BaseKey)`
     color: #ffffff;
-    background-color: #3091FD;
+    background-color: #3091fd;
   `,
   FunctionKey: styled(BaseKey)`
     color: #000000;
-    background-color: #AFAFAF;
+    background-color: #afafaf;
   `,
   ZeroKey: styled(BaseKey)`
     color: #ffffff;
@@ -48,18 +48,22 @@ export const styledKeys = {
     ::after {
       padding-bottom: 45%; /*  = 20% / 44% */
       display: block;
-      content: "";
+      content: '';
     }
-  `
-}
+  `,
+};
 
 export function Key({ type, payload, Component, label }) {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   return (
-    <Component onClick={() => {dispatch({ type, payload }) }}>
+    <Component
+      onClick={() => {
+        dispatch({ type, payload });
+      }}
+    >
       <span>{label}</span>
     </Component>
-  )
+  );
 }
 
 export const Container = styled.div`
@@ -67,4 +71,4 @@ export const Container = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   width: 100%;
-`
+`;

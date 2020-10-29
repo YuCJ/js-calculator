@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react'
-import styled from 'styled-components'
-import Panel from './panel'
-import Draggable from '../draggable'
-import { style as styleConstants } from '../../constants'
+import React, { useState, useEffect, useRef } from 'react';
+import styled from 'styled-components';
+import Panel from './panel';
+import Draggable from '../draggable';
+import { style as styleConstants } from '../../constants';
 
 const MobilePositioner = styled.div`
   position: fixed;
@@ -13,57 +13,68 @@ const MobilePositioner = styled.div`
   max-height: 50%;
   overflow-y: auto;
   box-sizing: border-box;
-`
+`;
 
 function getViewportWidth() {
-  let width = 0
+  let width = 0;
   if (
     typeof document !== 'undefined' &&
     document.documentElement &&
     document.documentElement.clientWidth
   ) {
-    width = document.documentElement.clientWidth
+    width = document.documentElement.clientWidth;
   } else if (typeof window !== 'undefined' && window.innerWidth) {
-    width = window.innerWidth
+    width = window.innerWidth;
   }
-  return width
+  return width;
 }
 
 export default function Calculator() {
-  const [isVisible, setIsVisible] = useState(false)
-  const [isMobile, setMobile] = useState(false)
-  const calculatorNode = useRef(null)
+  const [isVisible, setIsVisible] = useState(false);
+  const [isMobile, setMobile] = useState(false);
+  const calculatorNode = useRef(null);
 
   // Close the calculator when clicked outside
   useEffect(() => {
     const handleClick = (e) => {
-      if (!calculatorNode.current || !calculatorNode.current.contains(e.target)) {
-        setIsVisible(false)
+      if (
+        !calculatorNode.current ||
+        !calculatorNode.current.contains(e.target)
+      ) {
+        setIsVisible(false);
       }
-    }
+    };
     if (isVisible) {
-      document.addEventListener('click', handleClick)
+      document.addEventListener('click', handleClick);
       return () => {
-        document.removeEventListener('click', handleClick)
-      }
+        document.removeEventListener('click', handleClick);
+      };
     }
-  }, [isVisible])
+  }, [isVisible]);
 
   // Handle RWD
   useEffect(() => {
-    setMobile(getViewportWidth() <= styleConstants.breakpoints.mobileMaxWidth)
+    setMobile(getViewportWidth() <= styleConstants.breakpoints.mobileMaxWidth);
     const handleResize = () => {
-      setMobile(getViewportWidth() <= styleConstants.breakpoints.mobileMaxWidth)
-    }
-    window.addEventListener('resize', handleResize)
+      setMobile(
+        getViewportWidth() <= styleConstants.breakpoints.mobileMaxWidth
+      );
+    };
+    window.addEventListener('resize', handleResize);
     return () => {
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [])
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   return (
     <>
-      <button onClick={() => { setIsVisible(!isVisible) }}>小算盤</button>
+      <button
+        onClick={() => {
+          setIsVisible(!isVisible);
+        }}
+      >
+        小算盤
+      </button>
       {!isVisible ? null : isMobile ? (
         <MobilePositioner ref={calculatorNode}>
           <Panel />
@@ -74,5 +85,5 @@ export default function Calculator() {
         </Draggable>
       )}
     </>
-  )
+  );
 }
