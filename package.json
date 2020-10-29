@@ -1,0 +1,23 @@
+{
+  "name": "SpaceF2E",
+  "version": "1.0.0",
+  "author": "yucj <nakts0123@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "react": ">= 16.8.0",
+    "react-dom": ">= 16.8.0",
+    "react-is": ">= 16.8.0",
+    "react-redux": "^7.2.2",
+    "redux": "^4.0.5",
+    "styled-components": "^5.2.0"
+  },
+  "scripts": {
+    "clean": "rimraf dist",
+    "dev": "npm run clean && NODE_ENV=development parcel src/index.html"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4",
+    "rimraf": "^3.0.2"
+  }
+}
